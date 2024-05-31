@@ -1,4 +1,3 @@
----
 - name: Setup Laravel Project Environment
   hosts: ubuntu_server
   become: yes
@@ -20,6 +19,7 @@
           - php8.3-fpm
           - php-xml
           - php8.3-mbstring
+          - php-curl
           - npm
           - composer
           - mariadb-server
@@ -58,10 +58,11 @@
         update: yes
         force: yes
 
-    - name: Run composer installl
+    - name: Run composer install
       command: composer install
       args:
         chdir: /var/www/html/staging
+      become: true
       environment:
         COMPOSER_ALLOW_SUPERUSER: 1
 
@@ -89,7 +90,7 @@
         - { key: "DB_HOST", value: "localhost" }
         - { key: "DB_PORT", value: "3306" }
         - { key: "DB_DATABASE", value: "laravel" }
-        - { key: "DB_USERNAME", value: "root" }
+        - { key: "DB_USERNAME", value: "vichea" }
         - { key: "DB_PASSWORD", value: "123" }
 
     - name: Generate Key
@@ -113,7 +114,7 @@
       mysql_db:
         name: playbook
         state: present
-        login_user: root
+        login_user: vichea
         login_password: 123
 
     - name: Migration
@@ -223,7 +224,7 @@
             - { key: "DB_HOST", value: "localhost" }
             - { key: "DB_PORT", value: "3306" }
             - { key: "DB_DATABASE", value: "playbook" }
-            - { key: "DB_USERNAME", value: "root" }
+            - { key: "DB_USERNAME", value: "vichea" }
             - { key: "DB_PASSWORD", value: "123" }
 
         - name: Generate Key
@@ -313,9 +314,9 @@
       mail:
         host: sandbox.smtp.mailtrap.io
         port: 2525
-        username: fb9ec1d4e4e0cd
-        password: cd528dde3bc584
-        to: "techchivlim5@gmail.com"
+        username: b554026d560609
+        password: 7bd7916d8e4a26
+        to: "vichea@gmail.com"
         subject: "{{ subject }}"
         body: "{{ body }}"
         from: "ansible@email.com"
